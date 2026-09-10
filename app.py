@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 # ============================================================
-# CONFIGURAÇÃO
+# CONFIGURAÇÃO DA PÁGINA
 # ============================================================
 
 st.set_page_config(
@@ -17,7 +17,7 @@ st.set_page_config(
 
 
 # ============================================================
-# ESTADO
+# ESTADO DA LISTA DE PESSOAS
 # ============================================================
 
 if "people" not in st.session_state:
@@ -48,52 +48,58 @@ def remover_pessoa(index):
 # ============================================================
 
 st.markdown(
-    """
+"""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
+/* ============================================================
+   FONTES
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
 
 
-/* ==========================================================
+/* ============================================================
    PÁGINA
-   ========================================================== */
+   ============================================================ */
 
-html, body, [class*="css"] {
+html,
+body,
+[class*="css"] {
     font-family: 'Nunito', sans-serif;
 }
 
 .stApp {
     background:
         radial-gradient(
-            circle at 10% 10%,
-            rgba(112, 151, 72, 0.45),
+            circle at 5% 5%,
+            rgba(126, 164, 76, 0.45),
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 95% 15%,
+            rgba(71, 121, 57, 0.50),
             transparent 25%
         ),
         radial-gradient(
-            circle at 90% 20%,
-            rgba(38, 91, 48, 0.60),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 15% 90%,
-            rgba(130, 83, 40, 0.35),
-            transparent 30%
+            circle at 5% 90%,
+            rgba(126, 83, 42, 0.30),
+            transparent 25%
         ),
         linear-gradient(
-            135deg,
-            #173b27 0%,
-            #285d36 45%,
-            #3f6e3b 75%,
-            #594029 100%
+            145deg,
+            #163c27 0%,
+            #245a32 45%,
+            #326a39 75%,
+            #1d472d 100%
         );
 
     background-attachment: fixed;
 }
 
 
-/* ==========================================================
-   ESCONDER ELEMENTOS STREAMLIT
-   ========================================================== */
+/* ============================================================
+   STREAMLIT
+   ============================================================ */
 
 #MainMenu {
     visibility: hidden;
@@ -108,222 +114,309 @@ header {
 }
 
 
-/* ==========================================================
+/* ============================================================
    CONTAINER
-   ========================================================== */
+   ============================================================ */
 
 .block-container {
     max-width: 720px;
-    padding-top: 1rem;
+    padding-top: 0.8rem;
     padding-bottom: 3rem;
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
 
-/* ==========================================================
+/* ============================================================
    CONVITE
-   ========================================================== */
+   ============================================================ */
 
-.invite-card {
-    background: #fff9e7;
+.invite-wrapper {
+    background: #fff6d9;
     padding: 7px;
-    border-radius: 25px;
-    border: 4px solid rgba(255, 239, 190, 0.95);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-    margin-bottom: 25px;
-    overflow: hidden;
-}
-
-
-/* ==========================================================
-   CARDS
-   ========================================================== */
-
-.form-card {
-    background: rgba(255, 248, 225, 0.98);
     border-radius: 24px;
-    padding: 22px;
-    margin-top: 18px;
-    margin-bottom: 18px;
-    border: 4px solid rgba(116, 79, 38, 0.25);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    border: 3px solid #ead49b;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.30);
+    margin-bottom: 25px;
 }
 
 
-/* ==========================================================
-   TÍTULOS
-   ========================================================== */
+/* ============================================================
+   CABEÇALHO
+   ============================================================ */
 
 .main-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 38px;
+    font-size: 40px;
     font-weight: 800;
     text-align: center;
-    color: #5c351c;
+
+    color: #fff4c7;
+
     line-height: 1.05;
-    margin-bottom: 8px;
+
+    margin-top: 12px;
+    margin-bottom: 5px;
+
+    text-shadow:
+        2px 3px 0 #4a2915,
+        0 4px 10px rgba(0,0,0,0.35);
 }
 
 .main-subtitle {
-    font-size: 17px;
-    font-weight: 800;
     text-align: center;
-    color: #704728;
+
+    color: #fff4c7;
+
+    font-size: 18px;
+    font-weight: 800;
+
     margin-bottom: 12px;
+
+    text-shadow:
+        1px 2px 0 #4a2915;
 }
 
 .event-info {
     text-align: center;
-    color: #704728;
+
+    color: #fff9e3;
+
     font-size: 16px;
+    font-weight: 700;
+
     line-height: 1.7;
+
+    margin-bottom: 25px;
+
+    text-shadow:
+        1px 2px 0 #4a2915;
 }
+
+
+/* ============================================================
+   TÍTULOS
+   ============================================================ */
 
 .section-title {
     font-family: 'Baloo 2', sans-serif;
-    font-size: 27px;
+
+    color: #fff4c7;
+
+    font-size: 30px;
     font-weight: 800;
-    color: #5c351c;
-    margin-bottom: 5px;
+
+    margin-top: 28px;
+    margin-bottom: 4px;
+
+    text-shadow:
+        2px 3px 0 #4a2915,
+        0 3px 8px rgba(0,0,0,0.25);
 }
 
 .section-description {
-    color: #705238;
+    color: #fff8e0;
+
     font-size: 15px;
-    line-height: 1.5;
+    font-weight: 600;
+
+    line-height: 1.45;
+
+    margin-bottom: 12px;
+
+    text-shadow:
+        1px 2px 3px rgba(0,0,0,0.45);
 }
 
 
-/* ==========================================================
+/* ============================================================
+   LABELS DOS CAMPOS
+   ============================================================ */
+
+label {
+    color: #fff8e0 !important;
+    font-weight: 700 !important;
+}
+
+
+/* ============================================================
+   CAMPOS
+   ============================================================ */
+
+div[data-baseweb="input"] > div,
+div[data-baseweb="textarea"] > div,
+div[data-baseweb="select"] > div {
+    border-radius: 14px !important;
+}
+
+
+/* ============================================================
    PESSOA
-   ========================================================== */
+   ============================================================ */
 
 .person-header {
-    background: #76502d;
+    background: linear-gradient(
+        135deg,
+        #7b4a25,
+        #925d2c
+    );
+
     color: white;
-    border-radius: 15px;
-    padding: 10px 15px;
-    margin-top: 14px;
-    margin-bottom: 10px;
+
+    border-radius: 16px;
+
+    padding: 11px 16px;
+
+    margin-top: 18px;
+    margin-bottom: 8px;
 
     font-family: 'Baloo 2', sans-serif;
-    font-size: 21px;
+
+    font-size: 22px;
     font-weight: 800;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.25);
 }
 
 
-/* ==========================================================
+/* ============================================================
+   INFORMAÇÃO DE ADICIONAR
+   ============================================================ */
+
+.add-info {
+    background: rgba(255, 231, 178, 0.96);
+
+    color: #633817;
+
+    border: 2px dashed #a86f36;
+
+    border-radius: 17px;
+
+    padding: 13px;
+
+    margin-top: 18px;
+    margin-bottom: 10px;
+
+    text-align: center;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.15);
+}
+
+
+/* ============================================================
    BOTÕES
-   ========================================================== */
+   ============================================================ */
 
 .stButton > button {
     border-radius: 15px !important;
+
     min-height: 48px !important;
 
     font-family: 'Nunito', sans-serif !important;
+
     font-size: 16px !important;
+
     font-weight: 800 !important;
+
+    border: none !important;
 }
 
 
-/* ==========================================================
-   BOTÃO PRINCIPAL
-   ========================================================== */
+/* ============================================================
+   BOTÃO ADICIONAR
+   ============================================================ */
+
+.stButton > button:not([kind="primary"]) {
+    background: #fff4d1 !important;
+
+    color: #633817 !important;
+
+    border: 2px solid #c58a4b !important;
+}
+
+
+/* ============================================================
+   BOTÃO CONFIRMAR
+   ============================================================ */
 
 .stButton > button[kind="primary"] {
-    background: #75451f !important;
+    background: linear-gradient(
+        135deg,
+        #8a4f20,
+        #a8662d
+    ) !important;
+
     color: white !important;
-    border: none !important;
 
     font-family: 'Baloo 2', sans-serif !important;
-    font-size: 21px !important;
+
+    font-size: 22px !important;
+
     font-weight: 800 !important;
 
-    min-height: 58px !important;
+    min-height: 60px !important;
 
     box-shadow:
-        0 5px 12px rgba(0, 0, 0, 0.25);
+        0 6px 15px rgba(0,0,0,0.30);
 }
 
 
-/* ==========================================================
-   AVISO ADICIONAR
-   ========================================================== */
+/* ============================================================
+   RADIO
+   ============================================================ */
 
-.add-info {
-    background: #f1dfb6;
-    border: 2px dashed #a8783d;
-    color: #704728;
+div[data-testid="stRadio"] label {
+    color: #fff8e0 !important;
 
-    border-radius: 16px;
-    padding: 12px;
+    font-size: 16px !important;
 
-    text-align: center;
+    font-weight: 700 !important;
 
-    font-size: 14px;
-    font-weight: 700;
-
-    margin-top: 12px;
-    margin-bottom: 10px;
+    text-shadow:
+        1px 2px 3px rgba(0,0,0,0.5);
 }
 
 
-/* ==========================================================
-   INPUTS
-   ========================================================== */
-
-div[data-baseweb="input"] > div {
-    border-radius: 13px !important;
-}
-
-div[data-baseweb="textarea"] > div {
-    border-radius: 13px !important;
-}
-
-div[data-baseweb="select"] > div {
-    border-radius: 13px !important;
-}
-
-
-/* ==========================================================
+/* ============================================================
    RODAPÉ
-   ========================================================== */
+   ============================================================ */
 
 .footer {
     text-align: center;
-    color: white;
+
+    color: #fff6d9;
 
     font-size: 14px;
+
     font-weight: 800;
 
-    text-shadow:
-        0 2px 5px rgba(0, 0, 0, 0.7);
+    margin-top: 30px;
 
-    padding-top: 15px;
     padding-bottom: 25px;
+
+    text-shadow:
+        1px 2px 5px rgba(0,0,0,0.65);
 }
 
 
-/* ==========================================================
+/* ============================================================
    CELULAR
-   ========================================================== */
+   ============================================================ */
 
 @media (max-width: 600px) {
 
     .block-container {
-        padding-left: 0.6rem;
-        padding-right: 0.6rem;
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
         padding-top: 0.5rem;
     }
 
-    .form-card {
-        padding: 18px;
-        border-radius: 21px;
-    }
-
     .main-title {
-        font-size: 31px;
+        font-size: 32px;
     }
 
     .main-subtitle {
@@ -335,7 +428,7 @@ div[data-baseweb="select"] > div {
     }
 
     .section-title {
-        font-size: 24px;
+        font-size: 26px;
     }
 
     .section-description {
@@ -343,8 +436,9 @@ div[data-baseweb="select"] > div {
     }
 
     .person-header {
-        font-size: 19px;
+        font-size: 20px;
     }
+
 }
 
 </style>
@@ -362,7 +456,7 @@ imagem_convite = Path("convite.png")
 if imagem_convite.exists():
 
     st.markdown(
-        '<div class="invite-card">',
+        '<div class="invite-wrapper">',
         unsafe_allow_html=True
     )
 
@@ -380,11 +474,6 @@ if imagem_convite.exists():
 # ============================================================
 # CABEÇALHO
 # ============================================================
-
-st.markdown(
-    '<div class="form-card">',
-    unsafe_allow_html=True
-)
 
 st.markdown(
     '<div class="main-title">🦖 CONFIRME SUA PRESENÇA</div>',
@@ -407,20 +496,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
-
 
 # ============================================================
 # RESPONSÁVEL
 # ============================================================
-
-st.markdown(
-    '<div class="form-card">',
-    unsafe_allow_html=True
-)
 
 st.markdown(
     '<div class="section-title">👤 Quem está confirmando?</div>',
@@ -434,12 +513,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
-
-
 responsavel = st.text_input(
     "Nome do responsável",
     placeholder="Ex.: João da Silva",
@@ -450,11 +523,6 @@ responsavel = st.text_input(
 # ============================================================
 # PESSOAS
 # ============================================================
-
-st.markdown(
-    '<div class="form-card">',
-    unsafe_allow_html=True
-)
 
 st.markdown(
     '<div class="section-title">👨‍👩‍👧 Quem vai participar?</div>',
@@ -468,14 +536,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
-
 
 # ============================================================
-# CADA PESSOA
+# LISTA DE PESSOAS
 # ============================================================
 
 for i in range(len(st.session_state.people)):
@@ -520,10 +583,11 @@ for i in range(len(st.session_state.people)):
             if st.button(
                 "🗑️",
                 key=f"remover_{i}",
-                help="Remover pessoa"
+                help="Remover esta pessoa"
             ):
 
                 remover_pessoa(i)
+
                 st.rerun()
 
 
@@ -540,24 +604,19 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 if st.button(
     "➕ Adicionar outra pessoa",
     use_container_width=True
 ):
 
     adicionar_pessoa()
+
     st.rerun()
 
 
 # ============================================================
-# PRESENÇA
+# STATUS
 # ============================================================
-
-st.markdown(
-    '<div class="form-card">',
-    unsafe_allow_html=True
-)
 
 st.markdown(
     '<div class="section-title">🎉 Você vai à festa?</div>',
@@ -570,12 +629,6 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True
 )
-
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
-
 
 status = st.radio(
     "Escolha uma opção:",
@@ -592,11 +645,6 @@ status = st.radio(
 # ============================================================
 
 st.markdown(
-    '<div class="form-card">',
-    unsafe_allow_html=True
-)
-
-st.markdown(
     '<div class="section-title">💬 Deixe uma mensagem</div>',
     unsafe_allow_html=True
 )
@@ -608,12 +656,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
-
-
 mensagem = st.text_area(
     "Mensagem (opcional)",
     placeholder="Ex.: Estamos muito felizes e ansiosos para comemorar!",
@@ -623,10 +665,13 @@ mensagem = st.text_area(
 
 
 # ============================================================
-# BOTÃO
+# BOTÃO CONFIRMAR
 # ============================================================
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(
+    "<br>",
+    unsafe_allow_html=True
+)
 
 enviar = st.button(
     "🎉 CONFIRMAR PRESENÇA",
@@ -636,7 +681,7 @@ enviar = st.button(
 
 
 # ============================================================
-# ENVIO
+# ENVIO DOS DADOS
 # ============================================================
 
 if enviar:
@@ -705,9 +750,9 @@ if enviar:
     }
 
 
-    # --------------------------------------------------------
-    # GOOGLE SCRIPT
-    # --------------------------------------------------------
+    # ========================================================
+    # GOOGLE APPS SCRIPT
+    # ========================================================
 
     try:
 
@@ -721,9 +766,9 @@ if enviar:
         script_url = ""
 
 
-    # --------------------------------------------------------
-    # ENVIO PARA GOOGLE SHEETS
-    # --------------------------------------------------------
+    # ========================================================
+    # ENVIO
+    # ========================================================
 
     if script_url:
 
@@ -754,11 +799,6 @@ if enviar:
             st.error(
                 "❌ Erro ao conectar com o sistema de confirmação."
             )
-
-
-    # --------------------------------------------------------
-    # TESTE SEM GOOGLE SHEETS
-    # --------------------------------------------------------
 
     else:
 
