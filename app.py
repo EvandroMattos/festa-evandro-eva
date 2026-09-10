@@ -771,47 +771,26 @@ if enviar:
     # ========================================================
 
     if script_url:
+    try:
+        response = requests.post(
+            script_url,
+            json=dados,
+            timeout=15,
+            allow_redirects=False
+        )
 
-        try:
-
-            resposta = requests.post(
-                script_url,
-                json=dados,
-                timeout=15
-            )
-
-            if resposta.ok:
-
-                st.success(
-                    "🎉 Presença confirmada com sucesso!"
-                )
-
-                st.balloons()
-
-            else:
-
-                st.error(
-                    "❌ Não foi possível enviar a confirmação."
-                )
-
-        except Exception:
-
+        # O Google Apps Script pode responder com redirecionamento
+        # mesmo quando recebeu e processou o POST corretamente.
+        if response.status_code in (200, 201, 302, 303):
+            st.success("Presença confirmada com sucesso! 🎉")
+        else:
             st.error(
-                "❌ Erro ao conectar com o sistema de confirmação."
+                f"Não foi possível enviar a confirmação. "
+                f"Erro HTTP: {response.status_code}"
             )
 
-    else:
-
-        st.success(
-            "🎉 Formulário funcionando!"
-        )
-
-        st.info(
-            "📊 O Google Sheets ainda não está conectado."
-        )
-
-        st.json(dados)
-
+    except Exception as e:
+        st.error(f"Erro ao enviar confirmação: {e}")
 
 # ============================================================
 # RODAPÉ
