@@ -1,10 +1,11 @@
 import streamlit as st
 import requests
+import json
 from datetime import datetime
 
 
 # ============================================================
-# CONFIGURAÇÃO DA PÁGINA
+# CONFIGURAÇÃO
 # ============================================================
 
 st.set_page_config(
@@ -16,14 +17,14 @@ st.set_page_config(
 
 
 # ============================================================
-# ESTADO DA APLICAÇÃO
+# ESTADO
 # ============================================================
 
 if "people" not in st.session_state:
     st.session_state.people = [
         {
             "nome": "",
-            "idade": 5,
+            "idade": 0,
         }
     ]
 
@@ -73,7 +74,6 @@ html, body, [class*="css"] {
     padding-bottom: 2rem;
 }
 
-/* Esconde elementos desnecessários do Streamlit */
 #MainMenu {
     visibility: hidden;
 }
@@ -86,7 +86,11 @@ header {
     visibility: hidden;
 }
 
-/* Imagem do convite */
+
+/* ============================================================
+   CONVITE
+   ============================================================ */
+
 .invitation {
     background: #fff2cf;
     border: 3px solid #d88a32;
@@ -101,7 +105,11 @@ header {
     border-radius: 12px;
 }
 
-/* Títulos */
+
+/* ============================================================
+   TÍTULOS
+   ============================================================ */
+
 .party-title {
     font-family: 'Baloo 2', cursive;
     color: #fff4d0;
@@ -144,13 +152,16 @@ header {
     margin-bottom: 15px;
 }
 
-/* Labels */
+
+/* ============================================================
+   LABELS / CAMPOS
+   ============================================================ */
+
 label {
     color: #fff8e5 !important;
     font-weight: 700 !important;
 }
 
-/* Campos */
 div[data-baseweb="input"] {
     border-radius: 12px !important;
 }
@@ -159,7 +170,11 @@ div[data-baseweb="textarea"] {
     border-radius: 12px !important;
 }
 
-/* Pessoa */
+
+/* ============================================================
+   PESSOAS
+   ============================================================ */
+
 .person-box {
     background: rgba(255, 242, 207, 0.97);
     border: 3px solid #d88a32;
@@ -185,7 +200,6 @@ div[data-baseweb="textarea"] {
     margin-bottom: 10px;
 }
 
-/* Botão adicionar */
 .add-info {
     text-align: center;
     color: #fff4d0;
@@ -195,7 +209,11 @@ div[data-baseweb="textarea"] {
     margin-bottom: 4px;
 }
 
-/* Botões */
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
 .stButton > button {
     border-radius: 14px !important;
     min-height: 48px !important;
@@ -216,7 +234,11 @@ div[data-baseweb="textarea"] {
     background: linear-gradient(135deg, #c8782b, #df8a34) !important;
 }
 
-/* Radio */
+
+/* ============================================================
+   RADIO
+   ============================================================ */
+
 div[role="radiogroup"] {
     gap: 8px;
 }
@@ -227,28 +249,27 @@ div[role="radiogroup"] label {
     font-weight: 700 !important;
 }
 
-/* Caixa de resultado */
+
+/* ============================================================
+   RESULTADO
+   ============================================================ */
+
 .success-box {
     background: rgba(72, 125, 64, 0.75);
     border-radius: 12px;
-    padding: 14px;
+    padding: 16px;
     color: white;
     font-weight: 800;
     text-align: center;
     margin-top: 15px;
+    font-size: 17px;
 }
 
-.error-box {
-    background: rgba(110, 67, 48, 0.65);
-    border-radius: 12px;
-    padding: 14px;
-    color: #ffb5c7;
-    font-weight: 800;
-    text-align: center;
-    margin-top: 15px;
-}
 
-/* Rodapé */
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+
 .footer {
     text-align: center;
     color: #fff4d0;
@@ -260,7 +281,11 @@ div[role="radiogroup"] label {
     text-shadow: 2px 2px 3px #3d2818;
 }
 
-/* Mobile */
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
 @media (max-width: 600px) {
 
     .block-container {
@@ -312,7 +337,7 @@ try:
     )
 except Exception:
     st.warning(
-        "A imagem convite.png não foi encontrada no projeto."
+        "A imagem convite.png não foi encontrada."
     )
 
 st.markdown(
@@ -331,28 +356,8 @@ st.markdown(
 )
 
 st.markdown(
-    '<div class="party-subtitle">Escolha uma das opções abaixo.</div>',
+    '<div class="party-subtitle">Confirme sua presença de forma rápida e fácil!</div>',
     unsafe_allow_html=True,
-)
-
-
-# ============================================================
-# RESPONSÁVEL
-# ============================================================
-
-st.markdown(
-    '<div class="section-title">👨‍👩‍👧‍👦 Quem está respondendo?</div>',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="section-description">Informe o nome do responsável pela confirmação.</div>',
-    unsafe_allow_html=True,
-)
-
-responsavel = st.text_input(
-    "Nome do responsável",
-    placeholder="Ex.: João da Silva",
 )
 
 
@@ -361,12 +366,12 @@ responsavel = st.text_input(
 # ============================================================
 
 st.markdown(
-    '<div class="section-title">🦖 Quem vai participar?</div>',
+    '<div class="section-title">🦖 Quem vai à festa?</div>',
     unsafe_allow_html=True,
 )
 
 st.markdown(
-    '<div class="section-description">Adicione cada pessoa que irá à festa.</div>',
+    '<div class="section-description">Digite o nome e a idade de cada pessoa que irá participar.</div>',
     unsafe_allow_html=True,
 )
 
@@ -378,7 +383,7 @@ for index, pessoa in enumerate(st.session_state.people):
 <div class="person-box">
 <div class="person-title">👤 Pessoa {index + 1}</div>
 <div class="person-info">
-Informe o nome e a idade.
+Nome e idade
 </div>
 </div>
 """,
@@ -388,16 +393,18 @@ Informe o nome e a idade.
     col1, col2 = st.columns([3, 1])
 
     with col1:
+
         pessoa["nome"] = st.text_input(
             f"Nome da pessoa {index + 1}",
             value=pessoa["nome"],
             key=f"nome_{index}",
-            placeholder="Nome",
+            placeholder="Digite o nome",
         )
 
     with col2:
+
         pessoa["idade"] = st.number_input(
-            f"Idade",
+            "Idade",
             min_value=0,
             max_value=120,
             value=int(pessoa["idade"]),
@@ -411,16 +418,17 @@ Informe o nome e a idade.
             "🗑️ Remover",
             key=f"remove_{index}",
         ):
+
             remover_pessoa(index)
             st.rerun()
 
 
 # ============================================================
-# ADICIONAR PESSOA
+# ADICIONAR OUTRA PESSOA
 # ============================================================
 
 st.markdown(
-    '<div class="add-info">Você pode adicionar mais familiares ou convidados.</div>',
+    '<div class="add-info">Vai mais alguém com você?</div>',
     unsafe_allow_html=True,
 )
 
@@ -428,6 +436,7 @@ if st.button(
     "➕ Adicionar outra pessoa",
     key="add_person",
 ):
+
     adicionar_pessoa()
     st.rerun()
 
@@ -457,31 +466,13 @@ status = st.radio(
 
 
 # ============================================================
-# MENSAGEM
+# BOTÃO DE CONFIRMAÇÃO
 # ============================================================
 
 st.markdown(
-    '<div class="section-title">💬 Deixe uma mensagem</div>',
+    "<br>",
     unsafe_allow_html=True,
 )
-
-st.markdown(
-    '<div class="section-description">Opcional — mande um recado para o Evandro e a Eva.</div>',
-    unsafe_allow_html=True,
-)
-
-mensagem = st.text_area(
-    "Mensagem (opcional)",
-    placeholder="Escreva uma mensagem...",
-    height=120,
-)
-
-
-# ============================================================
-# ENVIO
-# ============================================================
-
-st.markdown("<br>", unsafe_allow_html=True)
 
 enviar = st.button(
     "🎉 CONFIRMAR PRESENÇA",
@@ -490,24 +481,11 @@ enviar = st.button(
 )
 
 
+# ============================================================
+# ENVIO
+# ============================================================
+
 if enviar:
-
-    # --------------------------------------------------------
-    # Validação do responsável
-    # --------------------------------------------------------
-
-    if not responsavel.strip():
-
-        st.error(
-            "Por favor, informe o nome do responsável."
-        )
-
-        st.stop()
-
-
-    # --------------------------------------------------------
-    # Pessoas válidas
-    # --------------------------------------------------------
 
     pessoas_validas = []
 
@@ -525,24 +503,27 @@ if enviar:
             )
 
 
+    # --------------------------------------------------------
+    # VALIDAÇÃO
+    # --------------------------------------------------------
+
     if not pessoas_validas:
 
         st.error(
-            "Informe pelo menos uma pessoa que irá à festa."
+            "Por favor, informe pelo menos uma pessoa."
         )
 
         st.stop()
 
 
     # --------------------------------------------------------
-    # Dados enviados para o Google Sheets
+    # DADOS
     # --------------------------------------------------------
 
     dados = {
         "timestamp": datetime.now().strftime(
             "%d/%m/%Y %H:%M:%S"
         ),
-        "responsavel": responsavel.strip(),
         "status": (
             "CONFIRMADO"
             if status.startswith("✅")
@@ -550,12 +531,11 @@ if enviar:
         ),
         "quantidade": len(pessoas_validas),
         "pessoas": pessoas_validas,
-        "mensagem": mensagem.strip(),
     }
 
 
     # --------------------------------------------------------
-    # URL do Google Apps Script
+    # GOOGLE APPS SCRIPT
     # --------------------------------------------------------
 
     script_url = st.secrets.get(
@@ -564,31 +544,30 @@ if enviar:
     )
 
 
-    # --------------------------------------------------------
-    # Envio para Google Sheets
-    # --------------------------------------------------------
-
     if script_url:
 
         try:
 
             response = requests.post(
                 script_url,
-                json=dados,
+                data={
+                    "data": json.dumps(
+                        dados,
+                        ensure_ascii=False
+                    )
+                },
                 timeout=20,
                 allow_redirects=True,
             )
 
 
-            # Google Apps Script normalmente retorna
-            # HTTP 200 quando a execução termina.
             if response.status_code == 200:
 
                 st.markdown(
                     """
 <div class="success-box">
-🎉 Presença confirmada com sucesso!<br>
-Obrigado por fazer parte desse momento! ❤️
+🎉 Presença confirmada com sucesso!<br><br>
+Evandro e Eva ficarão muito felizes em receber vocês! 🦖💗
 </div>
 """,
                     unsafe_allow_html=True,
@@ -601,7 +580,6 @@ Obrigado por fazer parte desse momento! ❤️
                     f"Erro HTTP: {response.status_code}"
                 )
 
-                # Mostra uma informação útil para diagnóstico
                 with st.expander("Detalhes técnicos"):
 
                     st.write(
@@ -618,8 +596,7 @@ Obrigado por fazer parte desse momento! ❤️
         except requests.exceptions.Timeout:
 
             st.error(
-                "O envio demorou demais e expirou. "
-                "Tente novamente."
+                "O envio demorou demais. Tente novamente."
             )
 
 
@@ -636,16 +613,12 @@ Obrigado por fazer parte desse momento! ❤️
         except Exception as e:
 
             st.error(
-                "Ocorreu um erro inesperado ao enviar a confirmação."
+                "Ocorreu um erro inesperado."
             )
 
             with st.expander("Detalhes técnicos"):
                 st.write(str(e))
 
-
-    # --------------------------------------------------------
-    # Fallback caso não exista o Secret
-    # --------------------------------------------------------
 
     else:
 
