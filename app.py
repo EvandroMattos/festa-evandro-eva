@@ -24,7 +24,7 @@ if "people" not in st.session_state:
     st.session_state.people = [
         {
             "nome": "",
-            "idade da criança": 0,
+            "idade": 0,
         }
     ]
 
@@ -37,7 +37,7 @@ def adicionar_pessoa():
     st.session_state.people.append(
         {
             "nome": "",
-            "idade da criança": 0,
+            "idade": 0,
         }
     )
 
