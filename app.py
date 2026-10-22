@@ -24,7 +24,7 @@ if "people" not in st.session_state:
     st.session_state.people = [
         {
             "nome": "",
-            "idade": 0,
+            "idade da criança": 0,
         }
     ]
 
@@ -37,7 +37,7 @@ def adicionar_pessoa():
     st.session_state.people.append(
         {
             "nome": "",
-            "idade": 0,
+            "idade da criança": 0,
         }
     )
 
@@ -371,7 +371,7 @@ st.markdown(
 )
 
 st.markdown(
-    '<div class="section-description">Digite o nome e a idade de cada pessoa que irá participar.</div>',
+    '<div class="section-description">Digite o nome de cada pessoa que irá participar.</div>',
     unsafe_allow_html=True,
 )
 
@@ -383,7 +383,7 @@ for index, pessoa in enumerate(st.session_state.people):
 <div class="person-box">
 <div class="person-title">👤 Pessoa {index + 1}</div>
 <div class="person-info">
-Nome e idade
+Nome e idade da criança
 </div>
 </div>
 """,
@@ -403,11 +403,11 @@ Nome e idade
 
     with col2:
 
-        pessoa["idade"] = st.number_input(
-            "Idade",
+        pessoa["idade da criança"] = st.number_input(
+            "Idade da criança",
             min_value=0,
             max_value=120,
-            value=int(pessoa["idade"]),
+            value=int(pessoa["idade da criança"]),
             step=1,
             key=f"idade_{index}",
         )
