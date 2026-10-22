@@ -498,7 +498,7 @@ if enviar:
             pessoas_validas.append(
                 {
                     "nome": nome,
-                    "idade": int(pessoa["idade"]),
+                    "idade": int(pessoa.get("idade", pessoa.get("idade_da_crianca", 0))),
                 }
             )
 
